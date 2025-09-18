@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Compte à rebours - Région Bruxelloise sans gouvernement</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+    img {
+      width: 150px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+    #record-info {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    #countdown {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: white;
+      padding: 20px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Drapeau de la Région bruxelloise -->
+  <img src="./Flag_of_the_Brussels-Capital_Region.svg.png" 
+       alt="Drapeau de Bruxelles-Capitale">
+
+  <h1>Bruxelles sans gouvernement</h1>
+
+  <div id="record-info">
+    Record à battre : <b>541 jours</b> (Belgique, 2010-2011) <br>
+    Actuellement (depuis le 9 juin 2024) : <span id="days-so-far">…</span> jours <br>
+    Nombre de jours restants pour battre ce record : <span id="days-left">…</span>
+  </div>
+
+  <div id="countdown"></div>
+
+  <script>
+    // Date de début : élections régionales de Bruxelles
+    const startDate = new Date("2024-06-09T00:00:00").getTime();
+    // Record à battre
+    const recordDays = 541;
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const elapsedMs = now - startDate;
+      const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+
+      const daysLeft = recordDays - elapsedDays;
+
+      document.getElementById("days-so-far").textContent = elapsedDays;
+      document.getElementById("days-left").textContent = (daysLeft > 0 ? daysLeft : 0);
+
+      if (daysLeft <= 0) {
+        document.getElementById("countdown").innerHTML = "⏰ Le record a été battu !";
+        clearInterval(timer);
+      } else {
+        // Afficher un compte à rebours standard jusqu'à la date de dépassement
+        // calculer la date de dépassement
+        const targetDate = new Date(startDate + recordDays * 24*60*60*1000);
+        const diff = targetDate - now;
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+          `Temps restant pour battre le record : ${days}j ${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+
+    const timer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
